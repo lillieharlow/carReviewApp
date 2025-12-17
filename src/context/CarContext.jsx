@@ -37,45 +37,43 @@ const initialState = {
 
 // Reducer function to manage car state: how state changes when actions are dispatched
 function carReducer(state, action) {
-    switch (action.type) {
-        case 'ADD_CAR': {
-            // action.payload is the new car object
-            return {
-                ...state,
-                cars: [...state.cars, action.payload],
-            };
-        }
-
-        case "ADD_REVIEW": {
-            // action.payload contains carId and the new review object
-            const { carId, review } = action.payload;
-            return {
-                ...state,
-                cars: state.cars.map((car) =>
-                    car.id === carId
-                        ? { ...car, reviews: [...car.reviews, review] }
-                        : car
-                    ),
-            };
-        }
-
-        default:
-            return state;
+  switch (action.type) {
+    case "ADD_CAR": {
+      // action.payload is the new car object
+      return {
+        ...state,
+        cars: [...state.cars, action.payload],
+      };
     }
+
+    case "ADD_REVIEW": {
+      // action.payload contains carId and the new review object
+      const { carId, review } = action.payload;
+      return {
+        ...state,
+        cars: state.cars.map((car) =>
+          car.id === carId ? { ...car, reviews: [...car.reviews, review] } : car
+        ),
+      };
+    }
+
+    default:
+      return state;
+  }
 }
 
 // CarProvider component to wrap the app and provide car state and dispatch
 export function CarProvider({ children }) {
-    const [state, dispatch] = useReducer(carReducer, initialState);
+  const [state, dispatch] = useReducer(carReducer, initialState);
 
-    return (
-        <CarContext.Provider value={{ state, dispatch }}>
-            {children}
-        </CarContext.Provider>
-    );
+  return (
+    <CarContext.Provider value={{ state, dispatch }}>
+      {children}
+    </CarContext.Provider>
+  );
 }
 
 // Custom hook to use CarContext in components
 export function useCarContext() {
-    return useContext(CarContext);
+  return useContext(CarContext);
 }
